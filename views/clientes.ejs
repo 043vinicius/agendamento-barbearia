@@ -1,12 +1,21 @@
 <%- include('partials/header.ejs') %>
 <script>
-    function openDeleteModal() {
+    function openDeleteModal(clienteId) {
         alert('Deseja realmente excluir este cliente?');
+        fetch('/clientes/' + clienteId, {
+            method: 'DELETE'
+        }).then(() => {
+            window.location.href = '/clientes';
+        }).catch(err => {
+            console.error(err);
+        });
     }
 </script>
 <body>
     <%- include('partials/navbar.ejs') %>
     <div class="container">
+        <h1 class="mt-3">Clientes</h1>
+        <a href="/clientes/add" class="btn btn-primary">Novo Cliente</a>
         <table class="table m-3 p-3">
             <thead>
                 <tr>
@@ -26,7 +35,7 @@
                         <td><%= cliente.email %></td>
                         <td>
                             <a href="/clientes/<%= cliente.id %>/edit" class="btn btn-primary">Editar</a>
-                            <button class="btn btn-danger" onclick="openDeleteModal()">Excluir</button>
+                            <button class="btn btn-danger" onclick="openDeleteModal(<%= cliente.id %>)">Excluir</button>
                         </td>
                     </tr>
                 <% }); %>

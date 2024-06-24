@@ -5,20 +5,20 @@
     <%- include('partials/navbar.ejs') %>
 
     <div class="container">
-        <h1 class="mt-3">Editar Cliente</h1>
+        <h1 class="mt-3">Novo Barbeiro</h1>
 
-        <form action="/clientes/<%= cliente.id %>" method="POST">
-            <div class="form-group
+        <form action="/barbeiros" method="POST">
+            <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="<%= cliente.nome %>">
+                <input type="text" class="form-control" id="nome" name="nome">
             </div>
             <div class="form-group">
                 <label for="telefone">Telefone</label>
-                <input type="text" class="form-control" id="telefone" name="telefone" value="<%= cliente.telefone %>">
+                <input type="text" class="form-control" id="telefone" name="telefone">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<%= cliente.email %>">
+                <input type="email" class="form-control" id="email" name="email">
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
