@@ -1,0 +1,49 @@
+<%- include('partials/header.ejs') %>
+<script>
+    function openDeleteModal(agendamentoId) {
+        alert('Deseja realmente excluir este agendamento?');
+        fetch('/agendamentos/' + agendamentoId, {
+            method: 'DELETE'
+        }).then(() => {
+            window.location.href = '/agendamentos';
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+</script>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container">
+        <h1 class="mt-3">Agendamentos</h1>
+        <a href="/agendamentos/add" class="btn btn-primary">Novo Agendamento</a>
+        <table class="table m-3 p-3">
+            <!-- clienteId, barbeiroId, data, hora -->
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Barbeiro</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% agendamentos.forEach(agendamento => { %>
+                    <tr>
+                        <td><%= agendamento.id %></td>
+                        <td><%= agendamento.cliente.nome %></td>
+                        <td><%= agendamento.barbeiro.nome %></td>
+                        <td><%= new Date(agendamento.data).toLocaleDateString() %></td>
+                        <td><%= agendamento.hora %></td>
+                        <td>
+                            <a href="/agendamentos/<%= agendamento.id %>/edit" class="btn btn-primary">Editar</a>
+                            <button class="btn btn-danger" onclick="openDeleteModal(<%= agendamento.id %>)">Excluir</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include('partials/footer.ejs') %>

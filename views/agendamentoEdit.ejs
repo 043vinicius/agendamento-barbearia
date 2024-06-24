@@ -1,0 +1,31 @@
+<%- include('partials/header.ejs') %>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container">
+        <h1 class="mt-3">Editar Agendamento</h1>
+        <form action="/agendamentos/<%= agendamento.id %>" method="POST">
+            <div class="form-group m-3 p-3">
+                <label for="cliente">Cliente</label>
+                <select class="form-control" id="clienteId" name="clienteId">
+                    <option value="">Selecione um cliente</option>
+                    <% clientes.forEach(cliente => { %>
+                        <option value="<%= cliente.id %>" <%= cliente.id === agendamento.clienteId ? 'selected' : '' %>><%= cliente.nome %></option>
+                    <% }) %>
+                </select>
+                <label for="barbeiroId">Barbeiro</label>
+                <select class="form-control" id="barbeiroId" name="barbeiroId">
+                    <option value="">Selecione um barbeiro</option>
+                    <% barbeiros.forEach(barbeiro => { %>
+                        <option value="<%= barbeiro.id %>" <%= barbeiro.id === agendamento.barbeiroId ? 'selected' : '' %>><%= barbeiro.nome %></option>
+                    <% }) %>
+                </select>
+                <label for="data">Data</label>
+                <input type="date" class="form-control" id="data" name="data" value="<%= new Date(agendamento.data).toISOString().split('T')[0] %>">
+                <label for="hora">Hora</label>
+                <input type="time" class="form-control" id="hora" name="hora" value="<%= agendamento.hora %>">
+                <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+            </div>
+        </form>
+    </div>
+</body>
+<%- include('partials/footer.ejs') %>
