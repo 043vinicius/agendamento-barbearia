@@ -16,10 +16,16 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+/**
+ * Rota da página inicial
+ */
 app.get("/", (req, res) => {
     res.render("index", {});
 });
 
+/**
+ * Rota da listagem de agendamentos, passando os agendamentos, e objeto de cliente/barbeiro pelo id di registro
+ */
 app.get("/agendamentos", async (req, res) => {
     try {
         const getAgendamentos = new Promise((resolve, reject) => {
@@ -80,6 +86,9 @@ app.get("/agendamentos", async (req, res) => {
     }
 });
 
+/**
+ *  Rota de edição de agendamento, passando o agendamento do id, clientes e barbeiros
+ */
 app.get("/agendamentos/:id/edit", async (req, res) => {
     const id = req.params.id;
     try {
@@ -125,6 +134,9 @@ app.get("/agendamentos/:id/edit", async (req, res) => {
     }
 });
 
+/**
+ * Rota de adição de agendamento, passando clientes e barbeiros
+ */
 app.get("/agendamentos/add", async (req, res) => {
     try {
         const getClientes = new Promise((resolve, reject) => {
@@ -158,6 +170,9 @@ app.get("/agendamentos/add", async (req, res) => {
     }
 });
 
+/**
+ * Rota de adição de agendamento, passando clientes e barbeiros
+ */
 app.post("/agendamentos", (req, res) => {
     const { clienteId, barbeiroId, data, hora } = req.body;
     try {
@@ -174,6 +189,9 @@ app.post("/agendamentos", (req, res) => {
     }
 });
 
+/**
+ * Rota de edição de agendamento, passando o agendamento, clientes e barbeiros, salvando as alterações com base no id cadastrado
+ */
 app.post("/agendamentos/:id", (req, res) => {
     const { clienteId, barbeiroId, data, hora } = req.body;
     try {
@@ -190,6 +208,9 @@ app.post("/agendamentos/:id", (req, res) => {
     }
 });
 
+/**
+ * Rota de exclusão de agendamento via id
+ */
 app.delete("/agendamentos/:id", (req, res) => {
     try {
         database.query(`DELETE FROM agendamentos WHERE id = ${req.params.id}`, (error, results, fields) => {
@@ -205,6 +226,9 @@ app.delete("/agendamentos/:id", (req, res) => {
     }
 });
 
+/**
+ * Rota de listagem de clientes
+ */
 app.get("/clientes", (req, res) => {
     try {
         database.query("SELECT * FROM clientes", (error, results, fields) => {
@@ -220,6 +244,9 @@ app.get("/clientes", (req, res) => {
     }
 });
 
+/**
+ * Rota de edição de cliente, passando o cliente do id
+ */
 app.get("/clientes/:id/edit", (req, res) => {
     const id = req.params.id;
     try {
@@ -236,10 +263,16 @@ app.get("/clientes/:id/edit", (req, res) => {
     }
 });
 
+/**
+ * Rota de adição de cliente
+ */
 app.get("/clientes/add", (req, res) => {
     res.render("clientesAdd", {});
 });
 
+/**
+ * Rota de adição de cliente, salvando os dados do cliente
+ */
 app.post("/clientes", (req, res) => {
     const { nome, email, telefone } = req.body;
     try {
@@ -256,6 +289,9 @@ app.post("/clientes", (req, res) => {
     }
 });
 
+/**
+ * Rota de edição de cliente, passando o cliente do id, salvando as alterações com base no id cadastrado
+ */
 app.post("/clientes/:id", (req, res) => {
     const { nome, email, telefone } = req.body;
     try {
@@ -272,6 +308,9 @@ app.post("/clientes/:id", (req, res) => {
     }
 });
 
+/**
+ * Rota de exclusão de cliente via id
+ */
 app.delete("/clientes/:id", (req, res) => {
     try {
         database.query(`DELETE FROM clientes WHERE id = ${req.params.id}`, (error, results, fields) => {
@@ -287,6 +326,9 @@ app.delete("/clientes/:id", (req, res) => {
     }
 });
 
+/**
+ * Rota de listagem de barbeiros
+ */
 app.get("/barbeiros", (req, res) => {
     try {
         database.query("SELECT * FROM barbeiros", (error, results, fields) => {
@@ -302,6 +344,9 @@ app.get("/barbeiros", (req, res) => {
     }
 });
 
+/**
+ * Rota de edição de barbeiro, passando o barbeiro do id
+ */
 app.get("/barbeiros/:id/edit", (req, res) => {
     const id = req.params.id;
     try {
@@ -318,10 +363,16 @@ app.get("/barbeiros/:id/edit", (req, res) => {
     }
 });
 
+/**
+ * Rota de adição de barbeiro
+ */
 app.get("/barbeiros/add", (req, res) => {
     res.render("barbeirosAdd", {});
 });
 
+/**
+ * Rota de adição de barbeiro, salvando os dados do barbeiro
+ */
 app.post("/barbeiros", (req, res) => {
     const { nome, email, telefone } = req.body;
     try {
@@ -338,6 +389,9 @@ app.post("/barbeiros", (req, res) => {
     }
 });
 
+/**
+ * Rota de edição de barbeiro, passando o barbeiro do id, salvando as alterações com base no id cadastrado
+ */
 app.post("/barbeiros/:id", (req, res) => {
     const { nome, email, telefone } = req.body;
     try {
@@ -354,6 +408,9 @@ app.post("/barbeiros/:id", (req, res) => {
     }
 });
 
+/**
+ * Rota de exclusão de barbeiro via id
+ */
 app.delete("/barbeiros/:id", (req, res) => {
     try {
         database.query(`DELETE FROM barbeiros WHERE id = ${req.params.id}`, (error, results, fields) => {
