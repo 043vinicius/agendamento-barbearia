@@ -20,4 +20,66 @@ app.get("/",(req, res) => {
     res.render("index", {});
 });
 
+app.get("/clientes",(req, res) => {
+    try {
+        database.query("SELECT * FROM clientes", (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.render("clientes", { clientes: results });
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.render("clientes", { clientes: [] });
+    }
+});
+
+app.get("/clientes/:id/edit",(req, res) => {
+    const id = req.params.id;
+    try {
+        database.query(`SELECT * FROM clientes WHERE id = ${id}`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.render("clientesEdit", { cliente: results[0] });
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.render("clientesEdit", { cliente: {} });
+    }
+});
+
+app.post("/clientes/:id",(req, res) => {
+    const { nome, email, telefone } = req.body;
+    try {
+        database.query(`UPDATE clientes SET nome = '${nome}', email = '${email}', telefone = '${telefone}' WHERE id = ${req.params.id}`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.redirect("/clientes");
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.redirect("/clientes");
+    }
+});
+
+app.get("/barbeiros",(req, res) => {
+    try {
+        database.query("SELECT * FROM barbeiros", (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.render("barbeiros", { barbeiros: results });
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.render("barbeiros", { barbeiros: [] });
+    }
+});
+
 app.listen(port, console.log(`Running on port ${port}.`));

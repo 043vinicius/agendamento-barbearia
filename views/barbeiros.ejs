@@ -1,0 +1,32 @@
+<%- include('partials/header.ejs') %>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container">
+        <table class="table m-3 p-3">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% barbeiros.forEach(barbeiro => { %>
+                    <tr>
+                        <td><%= barbeiro.id %></td>
+                        <td><%= barbeiro.nome %></td>
+                        <td><%= cliente.telefone %></td>
+                        <td><%= barbeiro.email %></td>
+                        <td>
+                            <a href="/barbeiros/<%= barbeiro.id %>/edit" class="btn btn-primary">Editar</a>
+                            <button class="btn btn-danger" onclick="openDeleteModal()">Excluir</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include('partials/footer.ejs') %>
