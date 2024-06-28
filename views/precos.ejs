@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+<script>
+    function openDeleteModal(clienteId) {
+        alert('Deseja realmente excluir este produto?');
+        fetch('/precos/' + clienteId, {
+            method: 'DELETE'
+        }).then(() => {
+            window.location.href = '/precos';
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+</script>
+<body>
+    <%- include('partials/navbar') %>
+    <div class="container">
+        <h1 class="mt-3">Tabela de preços</h1>
+        <a href="/precos/add" class="btn btn-primary">Novo Produto</a>
+        <table class="table m-3 p-3">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% produtos.forEach(produto => { %>
+                    <tr>
+                        <td><%= produto.id %></td>
+                        <td><%= produto.nome %></td>
+                        <td>R$ <%= produto.valor.toFixed(2).replace('.', ',') %></td>
+                        <td>
+                            <a href="/precos/<%= produto.id %>/edit" class="btn btn-primary">Editar</a>
+                            <button class="btn btn-danger" onclick="openDeleteModal(<%= produto.id %>)">Excluir</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+<%- include('partials/footer') %>

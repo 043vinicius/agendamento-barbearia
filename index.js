@@ -24,6 +24,106 @@ app.get("/", (req, res) => {
 });
 
 /**
+ * Rota de listagem da tabela de preços de vendas da barbearia
+ */
+app.get("/precos", (req, res) => {
+    try {
+        database.query("SELECT * FROM precos", (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.render("precos", { produtos: results });
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.render("precos", { produtos: [] });
+    }
+});
+
+/**
+ * Rota de edição de preço
+ */
+app.get("/precos/:id/edit", (req, res) => {
+    const id = req.params.id;
+    try {
+        database.query(`SELECT * FROM precos WHERE id = ${id}`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.render("precosEdit", { produto: results[0] });
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.render("precosEdit", { produto: {} });
+    }
+});
+
+/**
+ * Rota de criação de preço, passando o id do produto
+ */
+app.get("/precos/add", (req, res) => {
+    res.render("precosAdd", {});
+});
+
+/**
+ * Rota de criação de preço, salvando os dados do produto
+ */
+app.post("/precos", (req, res) => {
+    const { nome, valor } = req.body;
+    try {
+        database.query(`INSERT precos (nome, valor) VALUES ('${nome}', '${valor}')`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.redirect("/precos");
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.redirect("/precos");
+    }
+});
+
+/**
+ * Rota de edição de preço, passando o produto do id, salvando as alterações com base no id cadastrado
+ */
+app.post("/precos/:id", (req, res) => {
+    const { nome, valor } = req.body;
+    try {
+        database.query(`UPDATE precos SET nome = '${nome}', valor = '${valor}' WHERE id = ${req.params.id}`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.redirect("/precos");
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.redirect("/precos");
+    }
+});
+
+/**
+ * Rota de exclusão de preço via id
+ */
+app.delete("/precos/:id", (req, res) => {
+    try {
+        database.query(`DELETE FROM precos WHERE id = ${req.params.id}`, (error, results, fields) => {
+            if (error) {
+                console.log(`Error while querying the database: ${error}`);
+            } else {
+                res.redirect("/precos");
+            }
+        });
+    } catch (error) {
+        console.log(`Error while querying the database: ${error}`);
+        res.redirect("/precos");
+    }
+});
+
+/**
  * Rota da listagem de agendamentos, passando os agendamentos, e objeto de cliente/barbeiro pelo id di registro
  */
 app.get("/agendamentos", async (req, res) => {
